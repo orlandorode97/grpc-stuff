@@ -1,6 +1,9 @@
 package streaming
 
 import (
+	"errors"
+	"io"
+	"log"
 	"time"
 
 	"github.com/orlandorode97/grpc-stuff/module3/proto"
@@ -38,6 +41,51 @@ func (s *Service) StreamServerTime(req *proto.StreamServerTimeRequest, stream pr
 			if err != nil {
 				return err
 			}
+		}
+	}
+}
+
+func (s *Service) LogStream(stream proto.StreamingService_LogStreamServer) error {
+	//init count
+	count := 0
+	for {
+		req, err := stream.Recv()
+
+		if err == io.EOF {
+			// client closed the stream
+			return stream.SendAndClose(&proto.LogStreamResponse{
+				EntriesLogged: int32(count),
+			})
+		}
+
+		if err != nil {
+			return err
+		}
+
+		log.Printf("Received log [%s]: %s - %s\n", req.GetTimestamp().AsTime(), req.GetLevel().String(), req.GetMessage())
+		count++
+	}
+}
+
+func (s *Service) Echo(stream proto.StreamingService_EchoServer) error {
+	for {
+		req, err := stream.Recv()
+		if err != nil {
+
+			if errors.Is(err, io.EOF) {
+				return nil
+			}
+
+			return err
+		}
+		log.Printf("message received: %s", req.GetMessage())
+
+		res := &proto.EchoResponse{
+			Message: req.GetMessage(),
+		}
+
+		if err := stream.Send(res); err != nil {
+			return err
 		}
 	}
 }

@@ -8,4 +8,12 @@ run-server:
 run-client:
 	echo "running client"
 	go run cmd/client/main.go
+run-streaming-client:
+	echo "running streaming client"
+	go run cmd/client/streaming_client.go
+run-echo-client:
+	echo "running echo client"
+	go run cmd/client/echo.go
+
+
 

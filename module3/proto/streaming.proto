@@ -8,6 +8,8 @@ import "google/protobuf/timestamp.proto";
 
 service StreamingService {
   rpc StreamServerTime(StreamServerTimeRequest) returns (stream StreamServerTimeResponse);
+  rpc LogStream(stream LogStreamRequest) returns (LogStreamResponse);
+  rpc Echo(stream EchoRequest) returns (stream EchoResponse);
 }
 
 message StreamServerTimeRequest {
@@ -17,4 +19,32 @@ message StreamServerTimeRequest {
 message StreamServerTimeResponse {
   google.protobuf.Timestamp current_time = 1;
 }
+
+message LogStreamRequest {
+  google.protobuf.Timestamp timestamp = 1;
+  LogLevel level = 2;
+  string message = 3 ;
+}
+
+message LogStreamResponse {
+  int32 entries_logged = 1;
+}
+
+enum LogLevel {
+  LOG_LEVEL_UNSPECIFIED = 0;
+  LOG_LEVEL_DEBUG = 1;
+  LOG_LEVEL_INFO = 2;
+  LOG_LEVEL_WARNING = 3;
+  LOG_LEVEL_ERROR = 4;
+  LOG_LEVEL_FATAL = 5;
+}
+
+message EchoRequest {
+  string message = 1;
+}
+
+message EchoResponse {
+  string message = 1;
+}
+
 

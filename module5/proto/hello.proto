@@ -1,0 +1,34 @@
+syntax="proto3";
+
+package hello;
+
+option go_package = "github.com/orlandorode97/grpc-stuff/module5/proto";
+
+service HelloService {
+  rpc SayHello(SayHelloRequest) returns (SayHelloResponse);
+  rpc LongRunning(LongRunningRequest) returns (LongRunningResponse);
+  rpc Protected(ProtectedRequest) returns (ProtectedResponse);
+}
+
+message SayHelloRequest {
+  string name = 1;
+}
+
+message SayHelloResponse {
+  string message = 1;
+}
+
+message LongRunningRequest {}
+
+message LongRunningResponse {}
+
+message ProtectedRequest {
+
+}
+
+message ProtectedResponse {
+  string user_id = 1;
+}
+
+
+
