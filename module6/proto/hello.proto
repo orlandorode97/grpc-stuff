@@ -1,0 +1,29 @@
+syntax="proto3";
+
+package hello;
+
+option go_package = "github.com/orlandorode97/grpc-stuff/module6/proto";
+
+service HelloService {
+  rpc LongRunning(LongRunningRequest) returns (LongRunningResponse);
+  rpc Flaky(FlakyRequest) returns (FlakyResponse);
+  rpc GetServerAddress(GetServerAddressRequest) returns (GetServerAddressResponse);
+}
+
+
+message LongRunningRequest {}
+
+message LongRunningResponse {}
+
+message FlakyRequest {}
+
+message FlakyResponse {}
+
+message GetServerAddressRequest {}
+
+message GetServerAddressResponse {
+  string address = 1;
+}
+
+
+
