@@ -13,6 +13,7 @@ import (
 	"github.com/orlandorode97/grpc-stuff/module6/proto"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -38,6 +39,8 @@ func run(ctx context.Context) error {
 	helloService := hello.NewService(port)
 
 	proto.RegisterHelloServiceServer(grpcServer, helloService)
+
+	reflection.Register(grpcServer)
 
 	g, ctx := errgroup.WithContext(ctx)
 
